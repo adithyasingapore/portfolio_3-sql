@@ -12,3 +12,6 @@ Citation and thanks to authors and contributors to the dataset: Edouard Mathieu,
 
 I first split the original dataset into 2 tables - one containing various COVID deaths data (covid_deaths), and the other containing various COVID vaccinations data (covid_vaccinations). This enabled me to demonstrate JOINs on the 2 tables.
 
+I then run various analysis queries and also create temp tables and views.
+
+Some of the data wouldn't import as the data type that it should be, therefore I have also made use of SQL's CAST function, which allows me to cast the data into my desired data type for the purposes of my querying and analysis.
