@@ -29,7 +29,7 @@ SELECT * FROM covid_vaccinations
 -- Summary data overview of the covid_deaths table
 SELECT location, date, total_cases, new_cases, total_deaths, population
 	FROM covid_deaths
-    ORDER BY location, date;
+	ORDER BY location, date;
 
 
 
@@ -37,7 +37,7 @@ SELECT location, date, total_cases, new_cases, total_deaths, population
 -- Shows likelihood of death if a person contracts COVID-19 in each particular country.
 SELECT location, date, total_cases, CAST(total_deaths as decimal) AS total_deaths, (total_deaths/total_cases)*100 AS death_percentage
 	FROM covid_deaths
-    ORDER BY location, date;
+	ORDER BY location, date;
 /* NOTE:
 SQL imported the total_deaths column as "varchar" date type, which is not numeric.
 This is why I have CAST the data type into a numeric data type, in order to calculate.
@@ -51,8 +51,8 @@ So I have used 'decimal' data type instead. The results are still whole numbers.
 -- Changing the WHERE clause location to a different country will give the infection percentage for that country.
 SELECT location, date, population, total_cases, (total_cases/population)*100 AS infection_percentage
 	FROM covid_deaths
-    WHERE location = 'India'
-    ORDER BY location, date;
+	WHERE location = 'India'
+	ORDER BY location, date;
 /* NOTE:
 If you run my scripts and encounter any numeric columns not calculated properly,
 e.g. when ORDER BY descending, 997 appears before 8240, this is because SQL has imported
@@ -65,17 +65,17 @@ So, please use the CAST function to cast it into a numeric column wherever neede
 -- Listing countries by highest infection rate amongst population
 SELECT location, population, MAX(total_cases) AS highest_infection_count, MAX((total_cases/population))*100 AS infection_percentage
 	FROM covid_deaths
-    GROUP BY location, population
-    ORDER BY infection_percentage DESC;
+	GROUP BY location, population
+	ORDER BY infection_percentage DESC;
 
 
 
 -- Listing countries by highest number of deaths amongst population
 SELECT location, continent, population, MAX(CAST(total_deaths AS decimal)) AS total_death_count
 	FROM covid_deaths
-    WHERE continent != ""
-    GROUP BY location, population
-    ORDER BY total_death_count DESC;
+	WHERE continent != ""
+	GROUP BY location, population
+	ORDER BY total_death_count DESC;
 /* NOTE:
 Aggregate figures for "World", "Europe" etc. have been included in our dataset.
 So when we order by descending, these large figures appear at the top.
@@ -90,10 +90,10 @@ If it was NULL instead of empty, we would use WHERE continent IS NOT NULL.
 -- Listing the continents by highest death count
 SELECT location, MAX(CAST(total_deaths AS decimal)) AS total_death_count
 	FROM covid_deaths
-    WHERE continent = ""
-    AND location NOT IN ('World', 'European Union', 'International')
-    GROUP BY location
-    ORDER BY total_death_count DESC;
+	WHERE continent = ""
+	AND location NOT IN ('World', 'European Union', 'International')
+	GROUP BY location
+	ORDER BY total_death_count DESC;
 /* NOTE:
 We are now using WHERE continent = "" (is equal to empty). The '!' before '=' is removed.
 This will provide us the aggregate continental and world figures.
@@ -105,16 +105,16 @@ We also exclude 'European Union' (EU) as the EU is a part of 'Europe'. */
 -- Global new cases, new deaths and death percentage for every date worldwide
 SELECT date, SUM(new_cases) AS global_cases, SUM(new_deaths) AS global_deaths, (SUM(new_deaths)/SUM(new_cases))*100 AS global_death_percentage
 	FROM covid_deaths
-    WHERE continent != ""
-    GROUP BY date
-    ORDER BY date;
+	WHERE continent != ""
+	GROUP BY date
+	ORDER BY date;
 
 
 
 -- Total cumulative cases and deaths recorded worldwide till end of dataset date
 SELECT SUM(new_cases) AS global_cases, SUM(new_deaths) AS global_deaths, (SUM(new_deaths)/SUM(new_cases))*100 AS global_death_percentage
 	FROM covid_deaths
-    WHERE continent != "";
+	WHERE continent != "";
 
 
 
@@ -122,7 +122,7 @@ SELECT SUM(new_cases) AS global_cases, SUM(new_deaths) AS global_deaths, (SUM(ne
 -- Aliases 'dea' and 'vac' for easy referencing (don't have to type full table name every time).
 SELECT *
 	FROM covid_deaths dea
-    JOIN covid_vaccinations vac
+	JOIN covid_vaccinations vac
 		ON dea.location = vac.location
         AND dea.date = vac.date;
 
@@ -130,13 +130,13 @@ SELECT *
 
 -- Listing each country's new vaccinations and rolling sum of vaccinations on each date
 SELECT dea.continent, dea.location, dea.date, dea.population, vac.new_vaccinations,
-			SUM(CAST(vac.new_vaccinations AS float)) OVER (PARTITION BY dea.location ORDER BY dea.location, dea.date) AS rolling_sum_vaccinations
+		SUM(CAST(vac.new_vaccinations AS float)) OVER (PARTITION BY dea.location ORDER BY dea.location, dea.date) AS rolling_sum_vaccinations
 	FROM covid_deaths dea
-    JOIN covid_vaccinations vac
+	JOIN covid_vaccinations vac
 		ON dea.location = vac.location
         AND dea.date = vac.date
 	WHERE dea.continent != ""
-    ORDER BY dea.location, dea.date;
+	ORDER BY dea.location, dea.date;
 
 
 
@@ -145,13 +145,13 @@ WITH population_vaccinated (continent, location, date, population, new_vaccinati
 AS
 (
 SELECT dea.continent, dea.location, dea.date, dea.population, vac.new_vaccinations,
-			SUM(CAST(vac.new_vaccinations AS float)) OVER (PARTITION BY dea.location ORDER BY dea.location, dea.date) AS rolling_sum_vaccinations
+		SUM(CAST(vac.new_vaccinations AS float)) OVER (PARTITION BY dea.location ORDER BY dea.location, dea.date) AS rolling_sum_vaccinations
 	FROM covid_deaths dea
-    JOIN covid_vaccinations vac
+	JOIN covid_vaccinations vac
 		ON dea.location = vac.location
         AND dea.date = vac.date
 	WHERE dea.continent != ""
-    ORDER BY dea.location, dea.date
+	ORDER BY dea.location, dea.date
 )
 SELECT *, (rolling_sum_vaccinations/population)*100 AS percentage_vaccinated
 	FROM population_vaccinated;
@@ -173,13 +173,13 @@ CREATE TABLE coviddeaths.percentage_population_vaccinated (
 
 INSERT INTO coviddeaths.percentage_population_vaccinated
 SELECT dea.continent, dea.location, dea.date, dea.population, vac.new_vaccinations,
-			SUM(vac.new_vaccinations) OVER (PARTITION BY dea.location ORDER BY dea.location, dea.date) AS rolling_sum_vaccinations
+		SUM(vac.new_vaccinations) OVER (PARTITION BY dea.location ORDER BY dea.location, dea.date) AS rolling_sum_vaccinations
 	FROM covid_deaths dea
-    JOIN covid_vaccinations vac
+	JOIN covid_vaccinations vac
 		ON dea.location = vac.location
         AND dea.date = vac.date
 	WHERE dea.continent != ""
-    ORDER BY dea.location, dea.date;
+	ORDER BY dea.location, dea.date;
 
 SELECT *, (rolling_sum_vaccinations/population)*100 AS percentage_vaccinated
 	FROM coviddeaths.percentage_population_vaccinated;
@@ -189,9 +189,9 @@ SELECT *, (rolling_sum_vaccinations/population)*100 AS percentage_vaccinated
 -- Sample of a VIEW created to store data for later visualization using Tableau
 CREATE VIEW view_population_vaccinated AS
 SELECT dea.continent, dea.location, dea.date, dea.population, vac.new_vaccinations,
-			SUM(vac.new_vaccinations) OVER (PARTITION BY dea.location ORDER BY dea.location, dea.date) AS rolling_sum_vaccinations
+		SUM(vac.new_vaccinations) OVER (PARTITION BY dea.location ORDER BY dea.location, dea.date) AS rolling_sum_vaccinations
 	FROM covid_deaths dea
-    JOIN covid_vaccinations vac
+	JOIN covid_vaccinations vac
 		ON dea.location = vac.location
         AND dea.date = vac.date
 	WHERE dea.continent != "";
