@@ -4,7 +4,7 @@ Welcome to my third portfolio project. In this data cleaning and analysis projec
 
 **Project Guide**
 
-In this project, I use SQL to investigate and determine which countries / continents had the highest infection rate amongst their population, who had the highest death rate, summing global infection rate, death rate, number of vaccinations, percentage of population vaccinated on each date etc.
+I use SQL to investigate and determine which countries / continents had the highest infection rate amongst their population, who had the highest death rate, summing global infection rate, death rate, number of vaccinations, percentage of population vaccinated on each date etc.
 
 In doing so, I utilise various SQL queries including "JOIN"s, "WITH"s, excluding aggregate or double-counted data points with "!=" (NOT EQUAL TO), calculating new columns from existing columns, creating "VIEW"s and temp tables, and aliasing with "AS".
 
