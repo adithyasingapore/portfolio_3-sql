@@ -8,7 +8,7 @@ In this project, I use SQL to investigate and determine which countries / contin
 
 In doing so, I utilise various SQL queries including "JOIN"s, "WITH"s, excluding aggregate or double-counted data points with "!=" (NOT EQUAL TO), calculating new columns from existing columns, creating "VIEW"s and temp tables, and aliasing with "AS".
 
-I first split the original dataset into 2 tables - one containing various COVID deaths data (covid_deaths), and the other containing various COVID vaccinations data (covid_vaccinations). This enabled me to demonstrate "JOIN"s on the 2 tables.
+I first split the original dataset into 2 CSV tables - one containing various COVID deaths data (covid_deaths), and the other containing various COVID vaccinations data (covid_vaccinations). This enabled me to demonstrate "JOIN"s on the 2 tables.
 
 During data import, some of the columns wouldn't be imported as the data type that they should be, for example a numeric column being imported as a text column and refusing to be converted to a numeric column even during manual import. Therefore, during analysis, I made use of SQL's "CAST" function, which allows me to cast the data into my desired data type for the purposes of my querying and analysis.
 
