@@ -1,6 +1,6 @@
 # Portfolio Project 3 - SQL - COVID-19 Data
 
-Welcome to my third portfolio project. In this data cleaning and analysis project, I analyse a COVID-19 dataset.
+Welcome to my third portfolio project. In this data cleaning and analysis project, I query and analyse a COVID-19 dataset with a variety of SQL queries and functions.
 
 **Project Guide**
 
